@@ -42,6 +42,32 @@ app.post('/products', async (req, res) => {
   }
 });
 
+app.put('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndUpdate(id, req.body);
+    if (!product) {
+      return res.status(404).json({ message: `cannot find any product with ID ${id}` });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.put('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndDelete(id, req.body);
+    if (!product) {
+      return res.status(404).json({ message: `cannot find any product with ID ${id}` });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(
     `mongodb+srv://stas82kak05:${process.env.MONGOOSE_DATABASE_PASS}@cluster0.pfdpdd6.mongodb.net/CRUD-API?retryWrites=true&w=majority`,
